@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>محرّك | سوق السيارات الذكي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f8fc;--surface:#fff;--surface2:#eef3fb;--text:#0e1630;--muted:#5d6785;--line:#e3e8f2;
+  --brand:#1450e6;--brand2:#0b3bb5;--brandSoft:#e7eefe;--accent:#10b981;--warn:#f59e0b;--danger:#ef4444;
+  --shadow:0 6px 24px rgba(16,32,80,.08);--radius:16px;
+}
+[data-theme="dark"]{
+  --bg:#0a0f1e;--surface:#121a2e;--surface2:#18223b;--text:#eaf0ff;--muted:#9aa6c4;--line:#24304d;
+  --brand:#4b7bff;--brand2:#3463ea;--brandSoft:#1b2a52;--shadow:0 6px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select{font-family:inherit;color:var(--text)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:12px;font-weight:600;font-size:15px;transition:.2s}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand2);transform:translateY(-1px)}
+.btn-ghost{border:1.5px solid var(--line);background:var(--surface)}
+.btn-ghost:hover{border-color:var(--brand);color:var(--brand)}
+.btn-sm{padding:7px 12px;font-size:13px;border-radius:10px}
+h2.sec{font-size:clamp(22px,4vw,30px);font-weight:700}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.sec-head p{color:var(--muted);font-size:15px}
+section{padding:56px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+
+/* NAV */
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:22px}
+.logo-mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand),#6aa0ff);display:grid;place-items:center;color:#fff}
+.logo span b{color:var(--brand)}
+.nav-links{display:flex;gap:26px;font-weight:500;font-size:15px}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover,.nav-links a.active{color:var(--brand)}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);position:relative}
+.icon-btn:hover{border-color:var(--brand);color:var(--brand)}
+.badge-dot{position:absolute;top:-5px;left:-5px;background:var(--danger);color:#fff;font-size:11px;min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center;padding:0 4px}
+.menu-btn{display:none}
+@media(max-width:900px){.nav-links{display:none}.menu-btn{display:grid}.nav-actions .btn{display:none}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:68px;right:0;left:0;background:var(--surface);padding:16px 20px;border-bottom:1px solid var(--line);gap:14px}}
+
+/* HERO */
+.hero{padding:48px 0 0;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(800px 380px at 15% 10%,var(--brandSoft),transparent 70%)}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.05fr 1fr;gap:30px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--brandSoft);color:var(--brand);padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600}
+.hero h1{font-size:clamp(32px,6vw,54px);line-height:1.2;margin:14px 0 12px;font-weight:700}
+.hero h1 em{font-style:normal;color:var(--brand)}
+.hero p.lead{color:var(--muted);font-size:17px;max-width:520px}
+.hero-cta{display:flex;gap:10px;margin:22px 0;flex-wrap:wrap}
+.stats{display:flex;gap:26px;flex-wrap:wrap}
+.stat b{display:block;font-size:22px}
+.stat span{color:var(--muted);font-size:13px}
+.hero-art{position:relative;min-height:300px}
+.hero-art svg{width:100%;height:auto;filter:drop-shadow(0 30px 30px rgba(20,80,230,.18))}
+.float-chip{position:absolute;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:14px;padding:10px 14px;font-size:13px;display:flex;gap:10px;align-items:center;animation:bob 4s ease-in-out infinite}
+.float-chip b{display:block;font-size:14px}
+.float-chip .ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center}
+@keyframes bob{50%{transform:translateY(-8px)}}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-art{min-height:220px;order:-1}}
+
+/* SEARCH */
+.search-box{position:relative;margin-top:36px;padding:22px}
+.ai-search{display:flex;gap:10px;background:var(--surface2);border-radius:14px;padding:6px 6px 6px 6px;border:1.5px solid transparent;transition:.2s}
+.ai-search:focus-within{border-color:var(--brand)}
+.ai-search input{flex:1;border:none;background:none;padding:10px 12px;font-size:15px;outline:none;min-width:0}
+.ai-tag{display:flex;align-items:center;gap:6px;padding:0 10px;color:var(--brand);font-weight:600;font-size:13px;white-space:nowrap}
+.suggest{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
+.suggest button{font-size:12.5px;padding:5px 12px;border-radius:999px;background:var(--surface2);color:var(--muted);border:1px solid var(--line)}
+.suggest button:hover{color:var(--brand);border-color:var(--brand)}
+.filters{display:grid;grid-template-columns:repeat(6,1fr) auto;gap:10px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+.field select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:14px}
+@media(max-width:900px){.filters{grid-template-columns:repeat(2,1fr)}.filters .btn{grid-column:span 2;justify-content:center}.ai-tag span{display:none}}
+
+/* LISTINGS */
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.toolbar select{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:14px}
+.result-count{color:var(--muted);font-size:14px}
+.active-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.chip{background:var(--brandSoft);color:var(--brand);padding:4px 10px;border-radius:999px;font-size:12.5px;display:inline-flex;gap:6px;align-items:center}
+.chip button{color:inherit;font-size:14px;line-height:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.car{overflow:hidden;display:flex;flex-direction:column;transition:.25s;cursor:pointer}
+.car:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(16,32,80,.14)}
+.car-img{position:relative;aspect-ratio:16/10;display:grid;place-items:center;overflow:hidden}
+.car-img svg{width:92%}
+.car-top{position:absolute;top:10px;right:10px;left:10px;display:flex;justify-content:space-between;align-items:start}
+.deal{font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:8px;color:#fff}
+.deal.great{background:var(--accent)}.deal.good{background:#3b82f6}.deal.fair{background:#64748b}
+.fav{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;color:#334;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.fav.on{color:var(--danger)}
+.fav.on svg{fill:var(--danger)}
+.ev-tag{position:absolute;bottom:10px;right:10px;background:rgba(16,185,129,.95);color:#fff;font-size:11px;padding:3px 8px;border-radius:7px;font-weight:600}
+.car-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.car-body h3{font-size:16px;font-weight:700}
+.car-body .trim{color:var(--muted);font-size:13px;margin-top:-4px}
+.price-row{display:flex;justify-content:space-between;align-items:baseline}
+.price{font-size:20px;font-weight:700;color:var(--brand)}
+.monthly{font-size:12px;color:var(--muted)}
+.specs{display:flex;gap:12px;color:var(--muted);font-size:12.5px;flex-wrap:wrap}
+.specs span{display:inline-flex;gap:4px;align-items:center}
+.car-foot{display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--line);padding-top:10px;margin-top:auto;font-size:12.5px;color:var(--muted)}
+.cmp-toggle{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:4px 10px;border-radius:8px;border:1px solid var(--line)}
+.cmp-toggle.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.score{display:inline-flex;align-items:center;gap:4px;color:var(--accent);font-weight:600}
+.empty{text-align:center;padding:50px 20px;color:var(--muted)}
+
+/* BRANDS / CATEGORIES */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}}
+.brands{padding:22px}
+.brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px;margin-top:14px}
+.brand-btn{border:1px solid var(--line);border-radius:12px;padding:12px 6px;text-align:center;font-size:13px;font-weight:600;background:var(--surface);transition:.2s}
+.brand-btn .mono{width:38px;height:38px;border-radius:50%;margin:0 auto 6px;display:grid;place-items:center;background:var(--surface2);font-size:15px;color:var(--brand)}
+.brand-btn:hover{border-color:var(--brand);transform:translateY(-2px)}
+.cats{padding:22px;background:linear-gradient(135deg,var(--brand),#3f7bff);color:#fff;border:none}
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.cat-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:14px 6px;text-align:center;font-size:13px;color:#fff;transition:.2s}
+.cat-btn:hover{background:rgba(255,255,255,.24)}
+.cat-btn svg{width:54px;height:26px;display:block;margin:0 auto 6px}
+
+/* TOOLS */
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:900px){.tools{grid-template-columns:1fr}}
+.tool{padding:24px}
+.tool h3{font-size:19px;display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.tool .sub{color:var(--muted);font-size:14px;margin-bottom:18px}
+.tool .ic{width:38px;height:38px;border-radius:11px;background:var(--brandSoft);color:var(--brand);display:grid;place-items:center}
+.range-row{margin-bottom:14px}
+.range-row .lbl{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
+.range-row .lbl b{color:var(--brand)}
+input[type=range]{width:100%;accent-color:var(--brand)}
+.result-box{background:var(--surface2);border-radius:14px;padding:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center;margin-top:6px}
+.result-box div span{display:block;color:var(--muted);font-size:12px}
+.result-box div b{font-size:17px}
+.result-box .big b{color:var(--brand);font-size:22px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.form-grid input,.form-grid select,.inp{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:14px}
+.valuation{display:none;margin-top:14px;background:linear-gradient(135deg,var(--brandSoft),transparent);border:1px solid var(--line);border-radius:14px;padding:16px}
+.valuation.show{display:block;animation:fade .4s}
+.valuation .range{font-size:24px;font-weight:700;color:var(--brand)}
+.meter{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin:10px 0 4px}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--warn),var(--accent));border-radius:4px}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+.note{font-size:12px;color:var(--muted);margin-top:10px}
+
+/* WHY / STEPS */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.why{padding:20px}
+.why .ic{width:44px;height:44px;border-radius:12px;background:var(--brandSoft);color:var(--brand);display:grid;place-items:center;margin-bottom:12px}
+.why h4{font-size:16px;margin-bottom:4px}
+.why p{color:var(--muted);font-size:13.5px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:s}
+@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
+.step{padding:20px;position:relative}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:16px;left:16px;font-size:38px;font-weight:700;color:var(--brandSoft)}
+.step h4{font-size:15.5px;margin:6px 0 4px}
+.step p{color:var(--muted);font-size:13.5px}
+
+/* TESTIMONIALS */
+.testi-wrap{position:relative}
+.testi-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:none}
+.testi-track::-webkit-scrollbar{display:none}
+.testi{min-width:300px;flex:1;padding:20px;scroll-snap-align:start}
+.stars{color:#f5b301;letter-spacing:2px}
+.testi p{margin:10px 0 14px;font-size:14.5px}
+.who{display:flex;gap:10px;align-items:center;font-size:13.5px}
+.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700}
+.who small{display:block;color:var(--muted)}
+.sample-note{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
+
+/* FINANCE BANNER */
+.banner{background:linear-gradient(120deg,#0b2e8f,var(--brand) 60%,#4b8bff);color:#fff;border-radius:22px;padding:36px;display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center;overflow:hidden;position:relative}
+.banner h2{font-size:clamp(24px,4vw,34px);margin:6px 0 10px}
+.banner p{opacity:.9}
+.banner small{letter-spacing:1px;opacity:.85;font-weight:600}
+.banner .btn{background:#fff;color:var(--brand2);margin-top:18px}
+.banner-list{display:grid;gap:10px}
+.banner-list div{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);padding:12px 14px;border-radius:12px;display:flex;gap:10px;align-items:center;font-size:14px}
+@media(max-width:900px){.banner{grid-template-columns:1fr;padding:26px}}
+
+/* ALERT + CONTACT */
+.alert-box{padding:24px;display:grid;grid-template-columns:1fr 1.2fr;gap:20px;align-items:center}
+.alert-box form{display:flex;gap:8px;flex-wrap:wrap}
+.alert-box form input,.alert-box form select{flex:1;min-width:140px}
+@media(max-width:900px){.alert-box{grid-template-columns:1fr}}
+.contact-row{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:28px 0}
+.contact-items{display:flex;gap:28px;flex-wrap:wrap}
+.contact-items div{display:flex;gap:10px;align-items:center;font-size:14px}
+.contact-items small{display:block;color:var(--muted)}
+
+footer{background:#0a1430;color:#c6d0ea;padding:46px 0 20px;margin-top:20px}
+.foot-grid{display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:24px}
+.foot-grid h5{color:#fff;font-size:15px;margin-bottom:10px}
+.foot-grid a{display:block;font-size:13.5px;padding:3px 0;color:#9fb0d6}
+.foot-grid a:hover{color:#fff}
+.foot-grid p{font-size:13.5px;color:#9fb0d6;margin-top:10px}
+.copy{border-top:1px solid #1e2b52;margin-top:30px;padding-top:16px;text-align:center;font-size:13px;color:#7f8fb8}
+@media(max-width:900px){.foot-grid{grid-template-columns:1fr 1fr}.foot-grid>div:first-child{grid-column:span 2}}
+
+/* COMPARE BAR */
+.cmp-bar{position:fixed;bottom:16px;left:50%;transform:translate(-50%,140%);background:var(--text);color:var(--bg);padding:10px 12px 10px 16px;border-radius:16px;display:flex;align-items:center;gap:12px;z-index:60;transition:.35s;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:calc(100% - 32px)}
+.cmp-bar.show{transform:translate(-50%,0)}
+.cmp-bar .btn{background:var(--brand);color:#fff}
+.cmp-bar .clear{opacity:.7;font-size:13px}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(5,10,25,.6);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex;animation:fade .25s}
+.modal-box{background:var(--surface);position:relative;border-radius:20px;max-width:860px;width:100%;max-height:92vh;overflow:auto;position:relative}
+.modal-close{position:absolute;top:12px;left:12px;width:36px;height:36px;border-radius:50%;background:var(--surface2);font-size:20px;z-index:2}
+.detail{display:grid;grid-template-columns:1.1fr 1fr}
+.detail .gal{padding:20px;display:grid;place-items:center;border-radius:20px 0 0 20px}
+.detail .info{padding:24px}
+@media(max-width:760px){.detail{grid-template-columns:1fr}.detail .gal{border-radius:20px 20px 0 0}}
+.color-dots{display:flex;gap:8px;margin-top:12px;justify-content:center}
+.color-dots button{width:22px;height:22px;border-radius:50%;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--line)}
+.spec-table{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.spec-table div{background:var(--surface2);border-radius:10px;padding:8px 10px;font-size:13px}
+.spec-table div span{display:block;color:var(--muted);font-size:11.5px}
+.report{border:1px solid var(--line);border-radius:12px;padding:12px;margin:12px 0;font-size:13.5px}
+.report li{list-style:none;display:flex;gap:8px;align-items:center;padding:3px 0}
+.ok{color:var(--accent)}.bad{color:var(--warn)}
+.price-gauge{margin:12px 0}
+.gauge-bar{height:10px;border-radius:5px;background:linear-gradient(270deg,var(--accent),#3b82f6 50%,var(--warn));position:relative;margin:8px 0 4px}
+.gauge-bar i{position:absolute;top:-5px;width:4px;height:20px;background:var(--text);border-radius:2px}
+.gauge-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.detail-actions .btn{justify-content:center}
+.wa{background:#22c55e;color:#fff}
+.cmp-table{width:100%;border-collapse:collapse;font-size:14px}
+.cmp-table th,.cmp-table td{padding:10px;border-bottom:1px solid var(--line);text-align:center}
+.cmp-table th:first-child,.cmp-table td:first-child{text-align:right;color:var(--muted);font-weight:500}
+.cmp-table .best{color:var(--accent);font-weight:700}
+.booking{padding:24px}
+.seg{display:flex;background:var(--surface2);border-radius:12px;padding:4px;margin-bottom:12px}
+.seg button{flex:1;padding:9px;border-radius:9px;font-size:14px;font-weight:600;color:var(--muted)}
+.seg button.on{background:var(--surface);color:var(--brand);box-shadow:var(--shadow)}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0}
+.slots button{padding:8px;border:1px solid var(--line);border-radius:9px;font-size:13px}
+.slots button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.success{text-align:center;padding:30px 20px}
+.success .big-ic{width:70px;height:70px;border-radius:50%;background:rgba(16,185,129,.15);color:var(--accent);display:grid;place-items:center;margin:0 auto 12px;font-size:34px}
+
+/* ASSISTANT */
+.fab{position:fixed;bottom:18px;right:18px;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--brand),#6aa0ff);color:#fff;display:grid;place-items:center;z-index:70;box-shadow:0 10px 26px rgba(20,80,230,.45)}
+.fab .ping{position:absolute;inset:0;border-radius:50%;border:2px solid var(--brand);animation:ping 2s infinite}
+@keyframes ping{to{transform:scale(1.5);opacity:0}}
+.chat{position:fixed;bottom:88px;right:18px;width:min(360px,calc(100% - 36px));height:min(500px,70vh);z-index:70;display:none;flex-direction:column;overflow:hidden}
+.chat.open{display:flex;animation:fade .25s}
+.chat-head{background:linear-gradient(135deg,var(--brand),#3f7bff);color:#fff;padding:14px 16px;display:flex;gap:10px;align-items:center}
+.chat-head small{display:block;opacity:.85;font-size:12px}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:85%;padding:9px 12px;border-radius:14px;font-size:14px}
+.msg.bot{background:var(--surface2);align-self:flex-start;border-bottom-right-radius:4px}
+.msg.me{background:var(--brand);color:#fff;align-self:flex-end;border-bottom-left-radius:4px}
+.quick{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 8px}
+.quick button{font-size:12px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--brand)}
+.chat form{display:flex;border-top:1px solid var(--line);padding:8px;gap:6px}
+.chat form input{flex:1;border:none;background:var(--surface2);border-radius:10px;padding:10px;outline:none}
+
+.toast{position:fixed;top:84px;left:50%;transform:translate(-50%,-30px);opacity:0;background:var(--text);color:var(--bg);padding:10px 18px;border-radius:12px;font-size:14px;z-index:200;transition:.3s;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="logo"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 17h14M6 17l1.5-6h9L18 17M8 11l1.2-3.5h5.6L16 11"/><circle cx="8" cy="17" r="1.6"/><circle cx="16" cy="17" r="1.6"/></svg></div><span>محرّ<b>ك</b></span></a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#top" class="active">الرئيسية</a>
+      <a href="#listings">تصفّح السيارات</a>
+      <a href="#sell">بيع سيارتك</a>
+      <a href="#finance">التمويل</a>
+      <a href="#why">لماذا محرّك</a>
+      <a href="#contact">تواصل معنا</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" title="الوضع الليلي"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <button class="icon-btn" id="favBtn" title="المفضلة"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg><span class="badge-dot hidden" id="favCount">0</span></button>
+      <a href="#sell" class="btn btn-primary btn-sm">اعرض سيارتك</a>
+      <button class="icon-btn menu-btn" id="menuBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="pill">✨ بحث ذكي بالذكاء الاصطناعي</span>
+        <h1>سيارتك القادمة<br><em>أقرب مما تتخيّل</em></h1>
+        <p class="lead">آلاف السيارات المفحوصة من بائعين موثوقين. تقييم ذكي للسعر، تمويل متوافق مع الشريعة، وتجربة قيادة تصلك لباب بيتك.</p>
+        <div class="hero-cta">
+          <a href="#listings" class="btn btn-primary">تصفّح السيارات ←</a>
+          <a href="#sell" class="btn btn-ghost">قيّم سيارتك مجاناً</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>+12,000</b><span>سيارة معروضة</span></div>
+          <div class="stat"><b>150</b><span>نقطة فحص لكل سيارة</span></div>
+          <div class="stat"><b>7 أيام</b><span>ضمان استرجاع</span></div>
+        </div>
+      </div>
+      <div class="hero-art" id="heroArt">
+        <div class="float-chip" style="top:6%;right:2%"><div class="ic" style="background:rgba(16,185,129,.15);color:#10b981">✓</div><div><b>صفقة ممتازة</b>أقل من السوق بـ 8%</div></div>
+        <div class="float-chip" style="bottom:8%;left:0;animation-delay:1.5s"><div class="ic" style="background:var(--brandSoft);color:var(--brand)">﷼</div><div><b>1,240 ﷼ / شهرياً</b>قسط تقديري</div></div>
+      </div>
+    </div>
+
+    <div class="card search-box" id="search">
+      <form class="ai-search" id="aiForm">
+        <div class="ai-tag">✨ <span>اسأل بذكاء</span></div>
+        <input id="aiInput" placeholder="مثال: SUV عائلية أقل من 120 ألف في الرياض" autocomplete="off">
+        <button class="btn btn-primary" type="submit">ابحث</button>
+      </form>
+      <div class="suggest" id="suggest">
+        <button data-q="سيارة كهربائية">⚡ سيارة كهربائية</button>
+        <button data-q="سيدان اقتصادية أقل من 80 ألف">سيدان اقتصادية أقل من 80 ألف</button>
+        <button data-q="جيب عائلي 2023">جيب عائلي 2023</button>
+        <button data-q="بيك اب في جدة">بيك اب في جدة</button>
+        <button data-q="هايبرد تويوتا">هايبرد تويوتا</button>
+      </div>
+      <div class="filters">
+        <div class="field"><label>الماركة</label><select id="fMake"><option value="">كل الماركات</option></select></div>
+        <div class="field"><label>الفئة</label><select id="fBody"><option value="">كل الفئات</option></select></div>
+        <div class="field"><label>أعلى سعر</label><select id="fPrice"><option value="">بدون حد</option><option value="60000">60,000 ﷼</option><option value="80000">80,000 ﷼</option><option value="100000">100,000 ﷼</option><option value="150000">150,000 ﷼</option><option value="200000">200,000 ﷼</option><option value="300000">300,000 ﷼</option></select></div>
+        <div class="field"><label>من سنة</label><select id="fYear"><option value="">أي سنة</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option></select></div>
+        <div class="field"><label>الوقود</label><select id="fFuel"><option value="">الكل</option><option>بنزين</option><option>هايبرد</option><option>كهربائي</option><option>ديزل</option></select></div>
+        <div class="field"><label>المدينة</label><select id="fCity"><option value="">كل المدن</option></select></div>
+        <button class="btn btn-primary" id="applyBtn" style="align-self:end">بحث</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECENT -->
+<section id="recentSec" class="hidden" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="sec-head"><div><h2 class="sec" style="font-size:20px">👀 شاهدتها مؤخراً</h2></div></div>
+    <div class="grid" id="recentGrid"></div>
+  </div>
+</section>
+
+<!-- LISTINGS -->
+<section id="listings">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2 class="sec">السيارات المميزة</h2><p class="result-count" id="resultCount"></p></div>
+      <div class="toolbar">
+        <button class="btn btn-ghost btn-sm" id="onlyFav">♡ المفضلة فقط</button>
+        <select id="sortSel">
+          <option value="deal">الأفضل قيمة</option>
+          <option value="priceAsc">السعر: من الأقل</option>
+          <option value="priceDesc">السعر: من الأعلى</option>
+          <option value="year">الأحدث</option>
+          <option value="km">الأقل ممشى</option>
+        </select>
+      </div>
+    </div>
+    <div class="active-filters" id="activeFilters"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- BRANDS + CATS -->
+<section style="padding-top:0">
+  <div class="wrap two-col">
+    <div class="card brands"><h3>تصفّح حسب الماركة</h3><div class="brand-grid" id="brandGrid"></div></div>
+    <div class="card cats"><h3>تصفّح حسب الفئة</h3><div class="cat-grid" id="catGrid"></div></div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section id="finance" style="background:var(--surface)">
+  <div class="wrap">
+    <div class="sec-head"><div><h2 class="sec">أدوات ذكية تساعدك تقرر</h2><p>احسب قسطك، واعرف قيمة سيارتك الحالية — في ثوانٍ</p></div></div>
+    <div class="tools">
+      <div class="card tool">
+        <h3><span class="ic">﷼</span> حاسبة التمويل</h3>
+        <p class="sub">تمويل مرابحة متوافق مع الشريعة — احسب قسطك الشهري</p>
+        <div class="range-row"><div class="lbl">سعر السيارة <b id="vPrice"></b></div><input type="range" id="rPrice" min="30000" max="400000" step="5000" value="120000"></div>
+        <div class="range-row"><div class="lbl">الدفعة الأولى <b id="vDown"></b></div><input type="range" id="rDown" min="0" max="50" step="5" value="10"></div>
+        <div class="range-row"><div class="lbl">مدة التمويل <b id="vYears"></b></div><input type="range" id="rYears" min="1" max="5" step="1" value="5"></div>
+        <div class="range-row"><div class="lbl">نسبة الربح السنوية <b id="vRate"></b></div><input type="range" id="rRate" min="2" max="8" step="0.25" value="3.75"></div>
+        <div class="result-box">
+          <div class="big"><span>القسط الشهري</span><b id="oMonthly"></b></div>
+          <div><span>مبلغ التمويل</span><b id="oLoan"></b></div>
+          <div><span>إجمالي الربح</span><b id="oProfit"></b></div>
+        </div>
+        <p class="note">* أرقام تقديرية للتوضيح فقط، والعرض النهائي يحدده جهة التمويل.</p>
+      </div>
+
+      <div class="card tool" id="sell">
+        <h3><span class="ic">⚡</span> تقييم فوري لسيارتك</h3>
+        <p class="sub">اعرف قيمة سيارتك الحالية واستبدلها أو بِعها خلال 48 ساعة</p>
+        <form id="valForm">
+          <div class="form-grid">
+            <select id="vMake" required></select>
+            <select id="vYear" required></select>
+            <input id="vKm" type="number" placeholder="الممشى (كم)" min="0" required>
+            <select id="vCond"><option value="1.05">ممتازة</option><option value="1" selected>جيدة جداً</option><option value="0.9">جيدة</option><option value="0.78">تحتاج صيانة</option></select>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center">احسب القيمة الآن</button>
+        </form>
+        <div class="valuation" id="valOut">
+          <div style="font-size:13px;color:var(--muted)">القيمة السوقية التقديرية</div>
+          <div class="range" id="valRange"></div>
+          <div class="meter"><i id="valMeter"></i></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)"><span>طلب منخفض</span><span id="valDemand"></span><span>طلب مرتفع</span></div>
+          <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+            <button class="btn btn-primary btn-sm" data-toast="تم استلام طلب البيع — سيتواصل معك فريقنا (عرض تجريبي)">بيع لنا مباشرة</button>
+            <button class="btn btn-ghost btn-sm" onclick="location.hash='listings'">استبدلها بسيارة أحدث</button>
+          </div>
+        </div>
+        <p class="note">* التقييم مبني على متوسطات تقريبية، ويتأكد بعد الفحص.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><div><h2 class="sec">كيف تشتري سيارتك أونلاين؟</h2><p>أربع خطوات، وكل شيء من جوالك</p></div></div>
+    <div class="steps">
+      <div class="card step"><h4>🔍 ابحث واختر</h4><p>استخدم البحث الذكي والمقارنة لتجد السيارة المناسبة لميزانيتك.</p></div>
+      <div class="card step"><h4>🚗 جرّبها في بيتك</h4><p>احجز تجربة قيادة مجانية في المعرض أو تصلك لباب بيتك.</p></div>
+      <div class="card step"><h4>📄 موّلها أونلاين</h4><p>موافقة مبدئية خلال دقائق وربط مباشر مع جهات التمويل.</p></div>
+      <div class="card step"><h4>🎉 استلمها</h4><p>نقل ملكية إلكتروني وتوصيل للمنزل، مع ضمان استرجاع 7 أيام.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><div><h2 class="sec">لماذا تشتري من محرّك؟</h2></div></div>
+    <div class="why-grid">
+      <div class="card why"><div class="ic">🛡️</div><h4>فحص 150 نقطة</h4><p>كل سيارة مفحوصة بتقرير شفاف تقدر تقرأه قبل ما تقرر.</p></div>
+      <div class="card why"><div class="ic">📊</div><h4>مؤشر السعر العادل</h4><p>نقارن سعر كل سيارة بالسوق ونقولك هل هي صفقة أو لا.</p></div>
+      <div class="card why"><div class="ic">📜</div><h4>سجل السيارة</h4><p>عدد الملاك، الحوادث، والصيانات — كل شيء واضح.</p></div>
+      <div class="card why"><div class="ic">↩️</div><h4>استرجاع خلال 7 أيام</h4><p>ما عجبتك؟ رجّعها واسترد مبلغك بدون أسئلة.</p></div>
+      <div class="card why"><div class="ic">🔔</div><h4>تنبيهات الأسعار</h4><p>نخبرك فوراً عند نزول سعر سيارة تتابعها.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><div><h2 class="sec">ماذا يقول عملاؤنا</h2></div>
+      <div style="display:flex;gap:8px"><button class="icon-btn" id="tPrev">→</button><button class="icon-btn" id="tNext">←</button></div></div>
+    <div class="testi-track" id="testi">
+      <div class="card testi"><div class="stars">★★★★★</div><p>"حجزت تجربة القيادة من البيت ووصلتني السيارة بنفس اليوم. تقرير الفحص كان واضح جداً وريّحني."</p><div class="who"><div class="avatar" style="background:#1450e6">ع</div><div>عبدالله م.<small>الرياض</small></div></div></div>
+      <div class="card testi"><div class="stars">★★★★★</div><p>"حاسبة التمويل ساعدتني أعرف قسطي قبل ما أروح أي مكان، والموافقة جات خلال ساعات."</p><div class="who"><div class="avatar" style="background:#10b981">ن</div><div>نورة س.<small>جدة</small></div></div></div>
+      <div class="card testi"><div class="stars">★★★★★</div><p>"قيّمت سيارتي القديمة واستبدلتها بسيارة أحدث بدون تعب ولا مساومة."</p><div class="who"><div class="avatar" style="background:#f59e0b">خ</div><div>خالد ع.<small>الدمام</small></div></div></div>
+      <div class="card testi"><div class="stars">★★★★☆</div><p>"ميزة المقارنة بين السيارات ممتازة، وفّرت علي وقت كثير في الاختيار."</p><div class="who"><div class="avatar" style="background:#8b5cf6">ر</div><div>ريم ح.<small>الخبر</small></div></div></div>
+    </div>
+    <p class="sample-note">نصوص تجريبية للعرض — استبدلها بآراء عملائك الحقيقية</p>
+  </div>
+</section>
+
+<!-- BANNER -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="banner">
+      <div>
+        <small>تمويل بكل سهولة</small>
+        <h2>قُد سيارتك اليوم وادفع لاحقاً</h2>
+        <p>احصل على موافقة مبدئية خلال دقائق، بدون زيارة فرع، مع خيارات تمويل مرنة تناسب راتبك.</p>
+        <button class="btn" id="preApprove">احصل على موافقة مبدئية</button>
+      </div>
+      <div class="banner-list">
+        <div>✅ بدون دفعة أولى لبعض السيارات</div>
+        <div>✅ متوافق مع أحكام الشريعة</div>
+        <div>✅ مقارنة عروض أكثر من جهة تمويل</div>
+        <div>✅ قرار مبدئي خلال 10 دقائق</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICE ALERT -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="card alert-box">
+      <div><h3 style="font-size:20px">🔔 نبّهني عند نزول السعر</h3><p style="color:var(--muted);font-size:14px">اختر السيارة اللي تدور عليها ونرسل لك أول ما يتوفر عرض مناسب.</p></div>
+      <form id="alertForm">
+        <select class="inp" id="aMake"></select>
+        <select class="inp" id="aBudget"><option>حتى 80,000 ﷼</option><option>حتى 120,000 ﷼</option><option>حتى 200,000 ﷼</option><option>أكثر من 200,000 ﷼</option></select>
+        <input class="inp" type="email" placeholder="بريدك الإلكتروني" required>
+        <button class="btn btn-primary">فعّل التنبيه</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="wrap" id="contact">
+  <div class="contact-row">
+    <div><h3 style="font-size:20px">جاهز تبدأ؟</h3><p style="color:var(--muted);font-size:14px">فريقنا موجود يساعدك تلقى سيارتك المثالية.</p></div>
+    <div class="contact-items">
+      <div>📞<span><small>اتصل بنا</small>920000000</span></div>
+      <div>✉️<span><small>البريد</small>hello@muharrik.example</span></div>
+      <div>📍<span><small>زورونا</small>طريق الملك فهد، الرياض</span></div>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><a href="#top" class="logo" style="color:#fff"><div class="logo-mark">م</div>محرّك</a><p>شريكك الموثوق لإيجاد السيارة المناسبة. سيارات مفحوصة، أسعار عادلة، وتجربة شراء رقمية بالكامل.</p></div>
+      <div><h5>شراء</h5><a href="#listings">كل السيارات</a><a href="#listings">وصلت حديثاً</a><a href="#listings">أقل من 80 ألف</a><a href="#listings">سيارات كهربائية</a></div>
+      <div><h5>بيع</h5><a href="#sell">كيف يعمل</a><a href="#sell">تقييم فوري</a><a href="#sell">استبدال سيارتك</a></div>
+      <div><h5>التمويل</h5><a href="#finance">حاسبة القسط</a><a href="#finance">موافقة مبدئية</a><a href="#finance">الأسئلة الشائعة</a></div>
+      <div><h5>الدعم</h5><a href="#contact">مركز المساعدة</a><a href="#contact">تواصل معنا</a><a href="#contact">الشروط والأحكام</a><a href="#contact">سياسة الخصوصية</a></div>
+    </div>
+    <div class="copy">© 2026 محرّك. جميع الحقوق محفوظة.</div>
+  </div>
+</footer>
+
+<!-- COMPARE BAR -->
+<div class="cmp-bar" id="cmpBar"><span id="cmpText"></span><button class="clear" id="cmpClear">مسح</button><button class="btn btn-sm" id="cmpOpen">قارن الآن</button></div>
+
+<!-- MODAL -->
+<div class="modal" id="modal"><div class="modal-box"><button class="modal-close" id="modalClose">×</button><div id="modalBody"></div></div></div>
+
+<!-- ASSISTANT -->
+<button class="fab" id="fab" title="المساعد الذكي"><span class="ping"></span><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+<div class="card chat" id="chat">
+  <div class="chat-head"><div class="logo-mark" style="background:rgba(255,255,255,.2)">✨</div><div><b>مساعد محرّك</b><small>متصل الآن • يرد فوراً</small></div></div>
+  <div class="chat-msgs" id="msgs"></div>
+  <div class="quick" id="quick"><button>أبي سيارة عائلية</button><button>كيف التمويل؟</button><button>وش يشمل الفحص؟</button><button>أبي أبيع سيارتي</button></div>
+  <form id="chatForm"><input id="chatIn" placeholder="اكتب سؤالك..." autocomplete="off"><button class="btn btn-primary btn-sm">إرسال</button></form>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- DATA ---------- */
+const CARS=[
+ {id:1,make:"تويوتا",model:"كامري",trim:"GLE هايبرد",year:2023,price:118000,market:128000,km:31000,fuel:"هايبرد",trans:"أوتوماتيك",body:"سيدان",city:"الرياض",color:"#c9ccd3",score:96,owners:1,accidents:0,hp:208,seats:5},
+ {id:2,make:"هيونداي",model:"توسان",trim:"Smart",year:2024,price:109000,market:112000,km:12000,fuel:"بنزين",trans:"أوتوماتيك",body:"SUV",city:"جدة",color:"#1f3b73",score:98,owners:1,accidents:0,hp:187,seats:5},
+ {id:3,make:"لكزس",model:"LX 600",trim:"Ultra Luxury",year:2022,price:545000,market:560000,km:48000,fuel:"بنزين",trans:"أوتوماتيك",body:"SUV",city:"الرياض",color:"#1b1d22",score:94,owners:2,accidents:0,hp:409,seats:7},
+ {id:4,make:"نيسان",model:"باترول",trim:"LE Platinum",year:2021,price:235000,market:229000,km:76000,fuel:"بنزين",trans:"أوتوماتيك",body:"SUV",city:"الدمام",color:"#f2f2f2",score:89,owners:2,accidents:1,hp:400,seats:8},
+ {id:5,make:"تسلا",model:"Model 3",trim:"Long Range",year:2024,price:189000,market:205000,km:9000,fuel:"كهربائي",trans:"أوتوماتيك",body:"سيدان",city:"الرياض",color:"#c8102e",score:99,owners:1,accidents:0,hp:440,seats:5,range:600},
+ {id:6,make:"فورد",model:"F-150",trim:"Lariat",year:2022,price:179000,market:183000,km:54000,fuel:"بنزين",trans:"أوتوماتيك",body:"بيك اب",city:"جدة",color:"#2d5aa8",score:91,owners:1,accidents:0,hp:400,seats:5},
+ {id:7,make:"كيا",model:"K5",trim:"GT-Line",year:2023,price:89000,market:97000,km:28000,fuel:"بنزين",trans:"أوتوماتيك",body:"سيدان",city:"مكة",color:"#8a8f99",score:95,owners:1,accidents:0,hp:180,seats:5},
+ {id:8,make:"مرسيدس",model:"C 200",trim:"AMG Line",year:2022,price:189000,market:195000,km:39000,fuel:"بنزين",trans:"أوتوماتيك",body:"سيدان",city:"الخبر",color:"#e9eaec",score:93,owners:1,accidents:0,hp:204,seats:5},
+ {id:9,make:"بي إم دبليو",model:"M4",trim:"Competition",year:2021,price:315000,market:309000,km:33000,fuel:"بنزين",trans:"أوتوماتيك",body:"كوبيه",city:"الرياض",color:"#0e6bd8",score:92,owners:2,accidents:0,hp:510,seats:4},
+ {id:10,make:"تويوتا",model:"هايلكس",trim:"غمارتين 4x4",year:2024,price:112000,market:115000,km:15000,fuel:"ديزل",trans:"أوتوماتيك",body:"بيك اب",city:"المدينة",color:"#ffffff",score:97,owners:1,accidents:0,hp:201,seats:5},
+ {id:11,make:"بي واي دي",model:"Atto 3",trim:"Extended",year:2025,price:139000,market:148000,km:3000,fuel:"كهربائي",trans:"أوتوماتيك",body:"SUV",city:"جدة",color:"#2fa4a0",score:99,owners:1,accidents:0,hp:201,seats:5,range:480},
+ {id:12,make:"هيونداي",model:"i20",trim:"Comfort",year:2023,price:62000,market:68000,km:22000,fuel:"بنزين",trans:"أوتوماتيك",body:"هاتشباك",city:"الرياض",color:"#e85d2a",score:94,owners:1,accidents:0,hp:100,seats:5},
+ {id:13,make:"شيفروليه",model:"تاهو",trim:"Z71",year:2023,price:285000,market:279000,km:26000,fuel:"بنزين",trans:"أوتوماتيك",body:"SUV",city:"الدمام",color:"#26292e",score:95,owners:1,accidents:0,hp:355,seats:8},
+ {id:14,make:"تويوتا",model:"كورولا كروس",trim:"هايبرد",year:2024,price:104000,market:110000,km:11000,fuel:"هايبرد",trans:"أوتوماتيك",body:"SUV",city:"الرياض",color:"#7a1f2b",score:98,owners:1,accidents:0,hp:196,seats:5},
+ {id:15,make:"جيلي",model:"كولراي",trim:"Sport",year:2024,price:72000,market:76000,km:14000,fuel:"بنزين",trans:"أوتوماتيك",body:"SUV",city:"مكة",color:"#f4c430",score:96,owners:1,accidents:0,hp:174,seats:5},
+ {id:16,make:"فورد",model:"موستنج",trim:"GT",year:2022,price:165000,market:178000,km:30000,fuel:"بنزين",trans:"أوتوماتيك",body:"كوبيه",city:"جدة",color:"#ffb000",score:93,owners:1,accidents:0,hp:450,seats:4}
+];
+const BODIES=["SUV","سيدان","بيك اب","كوبيه","هاتشباك"];
+const CITIES=["الرياض","جدة","الدمام","الخبر","مكة","المدينة"];
+const MAKES=[...new Set(CARS.map(c=>c.make))];
+const MAKE_EN={"تويوتا":"T","هيونداي":"H","لكزس":"L","نيسان":"N","تسلا":"T","فورد":"F","كيا":"K","مرسيدس":"M","بي إم دبليو":"B","بي واي دي":"B","شيفروليه":"C","جيلي":"G"};
+
+/* ---------- STORAGE (safe) ---------- */
+const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let favs=store.get("mh_favs",[]), recent=store.get("mh_recent",[]), compare=[];
+let state={make:"",body:"",price:"",year:"",fuel:"",city:"",onlyFav:false,sort:"deal"};
+
+/* ---------- HELPERS ---------- */
+const $=s=>document.querySelector(s);
+const fmt=n=>Math.round(n).toLocaleString("en-US");
+const monthly=(p,down=.1,yrs=5,rate=.0375)=>{const L=p*(1-down);return L*(1+rate*yrs)/(yrs*12)};
+function deal(c){const d=(c.market-c.price)/c.market; if(d>=.05)return{k:"great",t:"صفقة ممتازة",d}; if(d>=0)return{k:"good",t:"سعر جيد",d}; return{k:"fair",t:"سعر عادل",d}}
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove("show"),2600)}
+
+/* ---------- CAR SVG ---------- */
+const SHAPES={
+ "سيدان":{b:"M20 110 L20 95 Q22 85 40 82 L95 76 L130 52 Q140 46 160 46 L205 46 Q222 46 235 56 L262 78 L290 84 Q302 87 302 100 L302 112 Q302 118 296 118 L26 118 Q20 118 20 110Z",w:["M105 76 L135 55 Q142 51 158 51 L178 51 L178 76Z","M186 51 L203 51 Q217 51 227 59 L248 76 L186 76Z"]},
+ "SUV":{b:"M20 112 L20 88 Q22 78 38 76 L70 72 L95 42 Q100 36 112 36 L230 36 Q244 36 252 46 L275 72 L292 76 Q302 79 302 92 L302 112 Q302 118 296 118 L26 118 Q20 118 20 112Z",w:["M100 70 L118 44 L170 44 L170 70Z","M178 44 L232 44 Q240 44 246 52 L262 70 L178 70Z"]},
+ "بيك اب":{b:"M20 114 L20 82 L180 82 L180 50 Q180 40 192 40 L240 40 Q252 40 260 52 L278 76 L294 80 Q302 82 302 94 L302 114 Q302 118 296 118 L24 118 Q20 118 20 114Z",w:["M190 48 L238 48 Q246 48 252 56 L266 76 L190 76Z"]},
+ "كوبيه":{b:"M18 110 L18 98 Q20 90 38 86 L100 78 L140 56 Q150 50 170 50 L200 50 Q215 50 228 60 L258 82 L292 88 Q304 91 304 102 L304 112 Q304 118 298 118 L24 118 Q18 118 18 110Z",w:["M115 78 L145 58 Q152 54 168 54 L198 54 Q210 54 220 62 L240 78Z"]},
+ "هاتشباك":{b:"M20 112 L20 92 Q22 82 40 80 L90 74 L122 48 Q130 42 146 42 L230 42 Q246 42 252 56 L262 80 L290 84 Q302 86 302 100 L302 112 Q302 118 296 118 L26 118 Q20 118 20 112Z",w:["M100 74 L127 51 L176 51 L176 74Z","M184 51 L228 51 Q240 51 244 62 L250 74 L184 74Z"]}
+};
+let uid=0;
+function carSVG(color,body,flip=true){
+  const s=SHAPES[body]||SHAPES["سيدان"], id="g"+(uid++);
+  const wheel=x=>`<circle cx="${x}" cy="118" r="21" fill="#15171c"/><circle cx="${x}" cy="118" r="12" fill="#9aa3b2"/><circle cx="${x}" cy="118" r="4" fill="#4b5262"/>`;
+  return `<svg viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></linearGradient></defs>
+  <ellipse cx="160" cy="138" rx="140" ry="9" fill="#000" opacity=".15"/>
+  <g ${flip?'transform="translate(320,0) scale(-1,1)"':''}>
+  <path d="${s.b}" fill="${color}" stroke="rgba(0,0,0,.25)" stroke-width="1.2"/><path d="${s.b}" fill="url(#${id})"/>
+  ${s.w.map(w=>`<path d="${w}" fill="#1c2840" opacity=".85"/>`).join("")}
+  <rect x="284" y="90" width="16" height="7" rx="3" fill="#fff6c7"/><rect x="21" y="92" width="10" height="6" rx="2" fill="#e23b3b"/>
+  <line x1="40" y1="100" x2="282" y2="100" stroke="rgba(0,0,0,.15)"/>
+  ${wheel(80)}${wheel(245)}</g></svg>`;
+}
+function bgFor(color){return `linear-gradient(160deg,var(--surface2),color-mix(in srgb,${color} 22%,var(--surface)))`}
+
+/* ---------- RENDER CARDS ---------- */
+const ic={km:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 12l4-3"/></svg>',
+ fuel:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v16M3 21h13M15 9h2a2 2 0 0 1 2 2v5a1.5 1.5 0 0 0 3 0V8l-3-3"/></svg>',
+ pin:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+ heart:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>'};
+function cardHTML(c){
+  const d=deal(c);
+  return `<article class="card car" data-id="${c.id}">
+   <div class="car-img" style="background:${bgFor(c.color)}">${carSVG(c.color,c.body)}
+    <div class="car-top"><span class="deal ${d.k}">${d.t}</span><button class="fav ${favs.includes(c.id)?'on':''}" data-fav="${c.id}" aria-label="مفضلة">${ic.heart}</button></div>
+    ${c.fuel==="كهربائي"?`<span class="ev-tag">⚡ مدى ${c.range} كم</span>`:""}</div>
+   <div class="car-body"><h3>${c.year} ${c.make} ${c.model}</h3><div class="trim">${c.trim}</div>
+    <div class="price-row"><span class="price">${fmt(c.price)} ﷼</span><span class="monthly">~${fmt(monthly(c.price))} ﷼/شهر</span></div>
+    <div class="specs"><span>${ic.km}${fmt(c.km)} كم</span><span>${ic.fuel}${c.fuel}</span><span>${ic.pin}${c.city}</span></div>
+    <div class="car-foot"><span class="score">🛡️ فحص ${c.score}%</span><button class="cmp-toggle ${compare.includes(c.id)?'on':''}" data-cmp="${c.id}">⇄ قارن</button></div>
+   </div></article>`;
+}
+function filtered(){
+  let list=CARS.filter(c=>(!state.make||c.make===state.make)&&(!state.body||c.body===state.body)&&(!state.price||c.price<=+state.price)&&(!state.year||c.year>=+state.year)&&(!state.fuel||c.fuel===state.fuel)&&(!state.city||c.city===state.city)&&(!state.onlyFav||favs.includes(c.id)));
+  const s={deal:(a,b)=>deal(b).d-deal(a).d,priceAsc:(a,b)=>a.price-b.price,priceDesc:(a,b)=>b.price-a.price,year:(a,b)=>b.year-a.year,km:(a,b)=>a.km-b.km}[state.sort];
+  return list.sort(s);
+}
+function render(){
+  const list=filtered();
+  $("#grid").innerHTML=list.length?list.map(cardHTML).join(""):`<div class="empty card" style="grid-column:1/-1">🔍 ما لقينا سيارات بهذه المواصفات.<br><button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="resetFilters()">مسح الفلاتر</button></div>`;
+  $("#resultCount").textContent=`${list.length} سيارة متاحة`;
+  const labels={make:"",body:"",price:"حتى ",year:"من ",fuel:"",city:""};
+  $("#activeFilters").innerHTML=Object.keys(labels).filter(k=>state[k]).map(k=>`<span class="chip">${labels[k]}${k==="price"?fmt(state[k])+" ﷼":state[k]}<button data-clear="${k}">×</button></span>`).join("");
+  ["make","body","price","year","fuel","city"].forEach(k=>{$("#f"+k[0].toUpperCase()+k.slice(1)).value=state[k]});
+  $("#onlyFav").textContent=state.onlyFav?"♥ المفضلة فقط":"♡ المفضلة فقط";
+  $("#onlyFav").style.color=state.onlyFav?"var(--danger)":"";
+  const fc=$("#favCount");fc.textContent=favs.length;fc.classList.toggle("hidden",!favs.length);
+  renderRecent();renderCmpBar();
+}
+function resetFilters(){Object.assign(state,{make:"",body:"",price:"",year:"",fuel:"",city:"",onlyFav:false});render()}
+function renderRecent(){
+  const items=recent.map(id=>CARS.find(c=>c.id===id)).filter(Boolean).slice(0,4);
+  $("#recentSec").classList.toggle("hidden",!items.length);
+  $("#recentGrid").innerHTML=items.map(cardHTML).join("");
+}
+
+/* ---------- SELECT OPTIONS ---------- */
+const opt=(arr)=>arr.map(v=>`<option>${v}</option>`).join("");
+$("#fMake").innerHTML+=opt(MAKES);$("#fBody").innerHTML+=opt(BODIES);$("#fCity").innerHTML+=opt(CITIES);
+$("#vMake").innerHTML=`<option value="" disabled selected>الماركة</option>`+opt(MAKES.concat(["أخرى"]));
+$("#vYear").innerHTML=`<option value="" disabled selected>سنة الصنع</option>`+opt(Array.from({length:14},(_,i)=>2025-i));
+$("#aMake").innerHTML=opt(MAKES);
+$("#brandGrid").innerHTML=MAKES.map(m=>`<button class="brand-btn" data-brand="${m}"><div class="mono">${MAKE_EN[m]||m[0]}</div>${m}</button>`).join("");
+$("#catGrid").innerHTML=BODIES.map(b=>`<button class="cat-btn" data-body="${b}">${carSVG("#ffffff",b,true).replace('<svg','<svg style="opacity:.95"')}${b}</button>`).join("")+`<button class="cat-btn" data-fuelcat="كهربائي"><div style="font-size:22px;height:26px;margin-bottom:6px">⚡</div>كهربائي</button>`;
+$("#heroArt").insertAdjacentHTML("afterbegin",carSVG("#1450e6","SUV"));
+
+/* ---------- EVENTS ---------- */
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-fav],[data-cmp],[data-clear],[data-brand],[data-body],[data-fuelcat],[data-toast],.car,[data-color],[data-book],[data-slot],[data-seg]");
+  if(!t)return;
+  if(t.dataset.fav){e.stopPropagation();const id=+t.dataset.fav;favs=favs.includes(id)?favs.filter(x=>x!==id):[...favs,id];store.set("mh_favs",favs);toast(favs.includes(id)?"أُضيفت للمفضلة ♥":"أُزيلت من المفضلة");render();if($("#modal").classList.contains("open")&&t.closest(".modal"))openDetail(id);return}
+  if(t.dataset.cmp){e.stopPropagation();const id=+t.dataset.cmp;if(compare.includes(id))compare=compare.filter(x=>x!==id);else{if(compare.length>=3){toast("تقدر تقارن 3 سيارات كحد أقصى");return}compare.push(id)}render();return}
+  if(t.dataset.clear){state[t.dataset.clear]="";render();return}
+  if(t.dataset.brand){resetFilters();state.make=t.dataset.brand;render();location.hash="listings";return}
+  if(t.dataset.body){resetFilters();state.body=t.dataset.body;render();location.hash="listings";return}
+  if(t.dataset.fuelcat){resetFilters();state.fuel=t.dataset.fuelcat;render();location.hash="listings";return}
+  if(t.dataset.toast){toast(t.dataset.toast);return}
+  if(t.dataset.color){const g=$("#detailGal");g.innerHTML=carSVG(t.dataset.color,g.dataset.body);g.parentElement.style.background=bgFor(t.dataset.color);return}
+  if(t.dataset.book){openBooking(+t.dataset.book);return}
+  if(t.dataset.slot){document.querySelectorAll("[data-slot]").forEach(b=>b.classList.remove("on"));t.classList.add("on");return}
+  if(t.dataset.seg){document.querySelectorAll("[data-seg]").forEach(b=>b.classList.remove("on"));t.classList.add("on");$("#addrRow").classList.toggle("hidden",t.dataset.seg!=="home");return}
+  if(t.classList.contains("car"))openDetail(+t.dataset.id);
+});
+["Make","Body","Price","Year","Fuel","City"].forEach(k=>$("#f"+k).addEventListener("change",e=>{state[k.toLowerCase()]=e.target.value;render()}));
+$("#applyBtn").onclick=()=>{location.hash="listings"};
+$("#sortSel").onchange=e=>{state.sort=e.target.value;render()};
+$("#onlyFav").onclick=()=>{state.onlyFav=!state.onlyFav;render()};
+$("#favBtn").onclick=()=>{state.onlyFav=true;render();location.hash="listings";if(!favs.length)toast("ما أضفت سيارات للمفضلة بعد")};
+$("#menuBtn").onclick=()=>$("#navLinks").classList.toggle("open");
+$("#navLinks").onclick=()=>$("#navLinks").classList.remove("open");
+
+/* theme */
+const savedTheme=store.get("mh_theme","light");document.documentElement.dataset.theme=savedTheme;
+$("#themeBtn").onclick=()=>{const n=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=n;store.set("mh_theme",n)};
+
+/* ---------- SMART SEARCH ---------- */
+function smartParse(q){
+  const s={make:"",body:"",price:"",year:"",fuel:"",city:""}, found=[];
+  const n=q.replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d));
+  MAKES.forEach(m=>{if(n.includes(m))s.make=m});
+  const alias={"لكزس":["lexus"],"تويوتا":["toyota"],"تسلا":["tesla"],"هيونداي":["hyundai","هونداي"],"مرسيدس":["مرسيدس","benz","بنز"],"بي إم دبليو":["bmw","بي ام"],"فورد":["ford"],"نيسان":["nissan"],"كيا":["kia"]};
+  for(const[k,v]of Object.entries(alias))if(v.some(a=>n.toLowerCase().includes(a)))s.make=k;
+  if(/suv|جيب|عائل|عائلي|دفع رباعي|اس يو/i.test(n))s.body="SUV";
+  if(/سيدان|صالون/.test(n))s.body="سيدان";
+  if(/بيك|غمارت|شاص|ونيت|pickup/i.test(n))s.body="بيك اب";
+  if(/كوبيه|رياضي|سبورت/.test(n))s.body="كوبيه";
+  if(/هاتش|صغيرة/.test(n))s.body="هاتشباك";
+  if(/كهرب|ev/i.test(n))s.fuel="كهربائي";
+  if(/هايبرد|هجين|hybrid/i.test(n))s.fuel="هايبرد";
+  if(/ديزل/.test(n))s.fuel="ديزل";
+  if(/اقتصادي|رخيص/.test(n)&&!/\d/.test(n))s.price="80000";
+  const pm=n.match(/(\d[\d,]*)\s*(ألف|الف|k)/i);if(pm)s.price=String(+pm[1].replace(/,/g,"")*1000);
+  else{const pm2=n.match(/(\d{5,7})/);if(pm2)s.price=pm2[1]}
+  const ym=n.match(/20(1\d|2[0-6])/);if(ym)s.year=ym[0];
+  CITIES.forEach(c=>{if(n.includes(c))s.city=c});
+  return s;
+}
+function runSmart(q){
+  if(!q.trim())return;
+  const s=smartParse(q);Object.assign(state,s,{onlyFav:false});render();
+  const n=filtered().length;toast(n?`✨ لقينا ${n} سيارة تناسب طلبك`:"ما لقينا نتائج مطابقة — جرّب توسّع البحث");
+  location.hash="listings";
+}
+$("#aiForm").onsubmit=e=>{e.preventDefault();runSmart($("#aiInput").value)};
+$("#suggest").onclick=e=>{const b=e.target.closest("button");if(b){$("#aiInput").value=b.dataset.q;runSmart(b.dataset.q)}};
+
+/* ---------- DETAIL MODAL ---------- */
+function openModal(html){$("#modalBody").innerHTML=html;$("#modal").classList.add("open");document.body.style.overflow="hidden"}
+function closeModal(){$("#modal").classList.remove("open");document.body.style.overflow=""}
+$("#modalClose").onclick=closeModal;$("#modal").onclick=e=>{if(e.target.id==="modal")closeModal()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+function openDetail(id){
+  const c=CARS.find(x=>x.id===id),d=deal(c);
+  recent=[id,...recent.filter(x=>x!==id)].slice(0,8);store.set("mh_recent",recent);renderRecent();
+  const lo=c.market*0.9,hi=c.market*1.1,pos=Math.min(96,Math.max(2,(c.price-lo)/(hi-lo)*100));
+  const colors=[c.color,"#ffffff","#1b1d22","#8a8f99","#1f3b73","#7a1f2b"];
+  openModal(`<div class="detail">
+   <div class="gal" style="background:${bgFor(c.color)}"><div style="width:100%"><div id="detailGal" data-body="${c.body}">${carSVG(c.color,c.body)}</div>
+    <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:6px">جرّب ألوان مختلفة</div>
+    <div class="color-dots">${colors.map(x=>`<button data-color="${x}" style="background:${x}"></button>`).join("")}</div></div></div>
+   <div class="info">
+    <span class="deal ${d.k}">${d.t}</span>
+    <h2 style="font-size:22px;margin-top:8px">${c.year} ${c.make} ${c.model}</h2>
+    <div style="color:var(--muted);font-size:14px">${c.trim} • ${c.city}</div>
+    <div class="price-row" style="margin-top:10px"><span class="price" style="font-size:26px">${fmt(c.price)} ﷼</span><span class="monthly">أو ${fmt(monthly(c.price))} ﷼ شهرياً</span></div>
+    <div class="price-gauge"><div style="font-size:13px;font-weight:600">مؤشر السعر مقارنة بالسوق</div>
+     <div class="gauge-bar"><i style="right:${pos}%"></i></div>
+     <div class="gauge-lbl"><span>أقل من السوق</span><span>متوسط السوق ${fmt(c.market)} ﷼</span><span>أعلى</span></div></div>
+    <div class="spec-table">
+     <div><span>الممشى</span>${fmt(c.km)} كم</div><div><span>الوقود</span>${c.fuel}</div>
+     <div><span>ناقل الحركة</span>${c.trans}</div><div><span>القوة</span>${c.hp} حصان</div>
+     <div><span>المقاعد</span>${c.seats}</div><div><span>${c.range?"المدى":"الفئة"}</span>${c.range?c.range+" كم":c.body}</div>
+    </div>
+    <ul class="report"><b style="display:block;margin-bottom:4px">📋 تقرير السيارة</b>
+     <li class="ok">✔ نتيجة الفحص ${c.score}% (150 نقطة)</li>
+     <li class="${c.accidents?'bad':'ok'}">${c.accidents?'⚠ حادث بسيط مسجل':'✔ بدون حوادث مسجلة'}</li>
+     <li class="ok">✔ ${c.owners===1?'مالك واحد':c.owners+' ملاك'} • صيانة في الوكالة</li>
+     <li class="ok">✔ ضمان استرجاع 7 أيام</li></ul>
+    <div class="detail-actions">
+     <button class="btn btn-primary" data-book="${c.id}">🚗 احجز تجربة قيادة</button>
+     <a class="btn wa" href="https://wa.me/966500000000?text=${encodeURIComponent('مهتم بـ '+c.year+' '+c.make+' '+c.model)}" target="_blank" rel="noopener">واتساب البائع</a>
+     <button class="btn btn-ghost" data-fav="${c.id}">${favs.includes(c.id)?'♥ في المفضلة':'♡ أضف للمفضلة'}</button>
+     <button class="btn btn-ghost" data-cmp="${c.id}">⇄ ${compare.includes(c.id)?'في المقارنة':'أضف للمقارنة'}</button>
+    </div>
+   </div></div>`);
+}
+
+/* ---------- BOOKING ---------- */
+function openBooking(id){
+  const c=CARS.find(x=>x.id===id);
+  const days=Array.from({length:4},(_,i)=>{const d=new Date();d.setDate(d.getDate()+i+1);return d.toLocaleDateString("ar-SA-u-ca-gregory",{weekday:"short",day:"numeric",month:"short"})});
+  openModal(`<div class="booking"><h2 style="font-size:20px">احجز تجربة قيادة</h2><p style="color:var(--muted);font-size:14px;margin-bottom:14px">${c.year} ${c.make} ${c.model} — مجاناً وبدون التزام</p>
+   <div class="seg"><button class="on" data-seg="show">في المعرض</button><button data-seg="home">🏠 في منزلي</button></div>
+   <form id="bookForm">
+    <div style="font-size:13px;color:var(--muted)">اختر اليوم</div>
+    <div class="slots">${days.map((d,i)=>`<button type="button" data-slot="d${i}" class="${i?'':'on'}">${d}</button>`).join("")}</div>
+    <div class="form-grid">
+     <select class="inp"><option>9:00 ص</option><option>11:00 ص</option><option>4:00 م</option><option>6:00 م</option><option>8:00 م</option></select>
+     <input class="inp" placeholder="الاسم" required>
+     <input class="inp" type="tel" placeholder="رقم الجوال 05xxxxxxxx" pattern="05[0-9]{8}" required>
+     <input class="inp hidden" id="addrRow" placeholder="الحي / العنوان">
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center">تأكيد الحجز</button>
+   </form></div>`);
+  $("#bookForm").onsubmit=e=>{e.preventDefault();openModal(`<div class="success"><div class="big-ic">✓</div><h2 style="font-size:20px">تم استلام طلب الحجز</h2><p style="color:var(--muted);margin:8px 0 16px">هذا عرض تجريبي للموقع — في النسخة الفعلية يتواصل معك البائع لتأكيد الموعد.</p><button class="btn btn-primary" onclick="closeModal()">تمام</button></div>`)};
+}
+
+/* ---------- COMPARE ---------- */
+function renderCmpBar(){$("#cmpBar").classList.toggle("show",compare.length>0);$("#cmpText").textContent=`${compare.length} / 3 سيارات للمقارنة`}
+$("#cmpClear").onclick=()=>{compare=[];render()};
+$("#cmpOpen").onclick=()=>{
+  if(compare.length<2){toast("اختر سيارتين على الأقل");return}
+  const cs=compare.map(id=>CARS.find(c=>c.id===id));
+  const rows=[["السعر",c=>c.price,"min",v=>fmt(v)+" ﷼"],["القسط الشهري",c=>monthly(c.price),"min",v=>fmt(v)+" ﷼"],["سنة الصنع",c=>c.year,"max",v=>v],["الممشى",c=>c.km,"min",v=>fmt(v)+" كم"],["القوة",c=>c.hp,"max",v=>v+" حصان"],["المقاعد",c=>c.seats,"max",v=>v],["نتيجة الفحص",c=>c.score,"max",v=>v+"%"],["الفرق عن السوق",c=>c.market-c.price,"max",v=>(v>=0?"أقل بـ ":"أعلى بـ ")+fmt(Math.abs(v))+" ﷼"]];
+  const txt=[["الوقود",c=>c.fuel],["الفئة",c=>c.body],["المدينة",c=>c.city]];
+  openModal(`<div style="padding:24px;overflow-x:auto"><h2 style="font-size:20px;margin-bottom:14px">مقارنة السيارات</h2>
+  <table class="cmp-table"><tr><th></th>${cs.map(c=>`<th><div style="width:130px;margin:auto">${carSVG(c.color,c.body)}</div>${c.make} ${c.model}<br><small style="color:var(--muted)">${c.year}</small></th>`).join("")}</tr>
+  ${rows.map(([l,f,b,fm])=>{const vals=cs.map(f),best=b==="min"?Math.min(...vals):Math.max(...vals);return`<tr><td>${l}</td>${vals.map(v=>`<td class="${v===best?'best':''}">${fm(v)}</td>`).join("")}</tr>`}).join("")}
+  ${txt.map(([l,f])=>`<tr><td>${l}</td>${cs.map(c=>`<td>${f(c)}</td>`).join("")}</tr>`).join("")}
+  <tr><td></td>${cs.map(c=>`<td><button class="btn btn-primary btn-sm" onclick="openDetail(${c.id})">التفاصيل</button></td>`).join("")}</tr></table>
+  <p class="note">الأخضر = الأفضل في كل بند</p></div>`);
+};
+
+/* ---------- FINANCE CALC ---------- */
+function calc(){
+  const p=+$("#rPrice").value,dn=+$("#rDown").value/100,y=+$("#rYears").value,r=+$("#rRate").value/100;
+  const loan=p*(1-dn),profit=loan*r*y,m=(loan+profit)/(y*12);
+  $("#vPrice").textContent=fmt(p)+" ﷼";$("#vDown").textContent=`${$("#rDown").value}% (${fmt(p*dn)} ﷼)`;
+  $("#vYears").textContent=y+(y===1?" سنة":y===2?" سنتين":y<=10?" سنوات":" سنة");$("#vRate").textContent=r*100+"%";
+  $("#oMonthly").textContent=fmt(m)+" ﷼";$("#oLoan").textContent=fmt(loan);$("#oProfit").textContent=fmt(profit);
+}
+["rPrice","rDown","rYears","rRate"].forEach(id=>$("#"+id).addEventListener("input",calc));calc();
+$("#preApprove").onclick=()=>{location.hash="finance";toast("عدّل الأرقام في الحاسبة ثم قدّم طلبك")};
+
+/* ---------- VALUATION ---------- */
+const BASE={"لكزس":330000,"تسلا":200000,"مرسيدس":230000,"بي إم دبليو":240000,"شيفروليه":200000,"نيسان":170000,"فورد":160000,"تويوتا":130000,"بي واي دي":140000,"هيونداي":95000,"كيا":95000,"جيلي":80000,"أخرى":90000};
+const DEMAND={"تويوتا":.92,"لكزس":.88,"هيونداي":.8,"نيسان":.78,"كيا":.74,"تسلا":.7,"فورد":.66,"شيفروليه":.64,"مرسيدس":.6,"بي إم دبليو":.55,"بي واي دي":.6,"جيلي":.58,"أخرى":.5};
+$("#valForm").onsubmit=e=>{
+  e.preventDefault();
+  const m=$("#vMake").value,y=+$("#vYear").value,km=+$("#vKm").value,cond=+$("#vCond").value;
+  const age=Math.max(0,2026-y);
+  let v=(BASE[m]||90000)*Math.pow(.86,age)*cond;
+  const expected=age*20000,diff=(km-expected)/10000;v*=Math.max(.6,1-diff*.012);
+  $("#valRange").textContent=`${fmt(v*.94/500*500)} – ${fmt(v*1.06/500*500)} ﷼`;
+  const dm=DEMAND[m]||.5;$("#valMeter").style.width=dm*100+"%";$("#valDemand").textContent=dm>.8?"🔥 طلب مرتفع":dm>.62?"طلب متوسط":"طلب معتدل";
+  $("#valOut").classList.add("show");
+};
+
+/* ---------- ALERT ---------- */
+$("#alertForm").onsubmit=e=>{e.preventDefault();toast(`🔔 تم تفعيل التنبيه لسيارات ${$("#aMake").value} (عرض تجريبي)`);e.target.reset()};
+
+/* ---------- TESTIMONIALS ---------- */
+$("#tNext").onclick=()=>$("#testi").scrollBy({left:-320,behavior:"smooth"});
+$("#tPrev").onclick=()=>$("#testi").scrollBy({left:320,behavior:"smooth"});
+
+/* ---------- ASSISTANT ---------- */
+const msgs=$("#msgs");
+function say(t,who="bot"){const d=document.createElement("div");d.className="msg "+who;d.innerHTML=t;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
+function reply(q){
+  const n=q.toLowerCase();
+  if(/تمويل|قسط|اقساط|أقساط/.test(n))return`نوفر تمويل مرابحة متوافق مع الشريعة لمدة تصل 5 سنوات، وتقدر تحصل على موافقة مبدئية خلال دقائق. <a href="#finance" style="color:var(--brand);font-weight:600">جرّب حاسبة القسط ←</a>`;
+  if(/فحص|تقرير|حادث/.test(n))return"كل سيارة تمر بفحص 150 نقطة يشمل المحرك، القير، الهيكل، الكهرباء والشاصي، وتقدر تشوف التقرير كامل داخل صفحة السيارة 🛡️";
+  if(/ابيع|أبيع|بيع|تقييم|استبدال/.test(n))return`سهلة! أدخل بيانات سيارتك في <a href="#sell" style="color:var(--brand);font-weight:600">التقييم الفوري</a> وتعرف قيمتها خلال ثوانٍ، ونشتريها منك خلال 48 ساعة.`;
+  if(/تجرب|تجربة|اختبار/.test(n))return"تقدر تحجز تجربة قيادة مجانية من صفحة أي سيارة — في المعرض أو نوصلها لبيتك 🏠";
+  if(/ضمان|استرجاع|ارجاع/.test(n))return"عندك 7 أيام تجرّب السيارة، وإذا ما عجبتك ترجعها وتسترد مبلغك.";
+  if(/مرحبا|السلام|هلا|اهلا/.test(n))return"وعليكم السلام وأهلاً فيك! 👋 وش نوع السيارة اللي تدور عليها؟";
+  const s=smartParse(q);
+  if(Object.values(s).some(Boolean)){Object.assign(state,s,{onlyFav:false});render();const r=filtered();
+    return r.length?`لقيت لك ${r.length} سيارة 👇<br>${r.slice(0,3).map(c=>`• <a href="#" onclick="openDetail(${c.id});return false" style="color:var(--brand)">${c.year} ${c.make} ${c.model}</a> — ${fmt(c.price)} ﷼`).join("<br>")}<br><a href="#listings" style="font-weight:600;color:var(--brand)">عرض الكل ←</a>`:"ما لقيت شي مطابق تماماً، جرّب ترفع الميزانية أو تغيّر الفئة."}
+  return"ممكن توضح أكثر؟ مثلاً: «أبي جيب عائلي أقل من 150 ألف» أو اسألني عن التمويل والفحص 😊";
+}
+function ask(q){if(!q.trim())return;say(q.replace(/</g,"&lt;"),"me");setTimeout(()=>say(reply(q)),450)}
+say("هلا! أنا مساعد محرّك الذكي ✨<br>قول لي وش تدور عليه وأنا أرشّح لك أنسب السيارات.");
+$("#fab").onclick=()=>{$("#chat").classList.toggle("open");$("#fab .ping")?.remove()};
+$("#chatForm").onsubmit=e=>{e.preventDefault();ask($("#chatIn").value);$("#chatIn").value=""};
+$("#quick").onclick=e=>{const b=e.target.closest("button");if(b)ask(b.textContent==="أبي سيارة عائلية"?"أبي جيب عائلي":b.textContent)};
+
+render();
+</script>
+</body>
+</html>
